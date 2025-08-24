@@ -5,8 +5,7 @@ import {
   VoiceEmotion,
   StartAvatarRequest,
   STTProvider,
-  ElevenLabsModel,
-  StreamingAvatarApiConfig
+  ElevenLabsModel
 } from "@heygen/streaming-avatar";
 import { useEffect, useRef, useState, Fragment, memo, useMemo, useCallback } from "react";
 import { useMemoizedFn, useUnmount } from "ahooks";
@@ -21,6 +20,7 @@ import { StreamingAvatarProvider, StreamingAvatarSessionState } from "@/componen
 import { LoadingIcon } from "@/components/Icons";
 import { MessageHistory } from "@/components/AvatarSession/MessageHistory";
 import { MessagePusher } from "@/components/MessagePusher";
+import { v4 as uuidv4 } from "uuid";
 
 import { AVATARS, API_ENDPOINTS } from "@/constants/Data";
 
@@ -48,7 +48,7 @@ const InteractiveAvatarInner = memo(function InteractiveAvatar() {
 
   const [config, setConfig] = useState<StartAvatarRequest>(DEFAULT_CONFIG);
 
-const [sessionId, setSessionId] = useState<string | null>(null);
+  const [sessionId, setSessionId] = useState<string | null>(null);
   const mediaStream = useRef<HTMLVideoElement>(null);
 
   // Get userId from query params once
@@ -73,42 +73,45 @@ const [sessionId, setSessionId] = useState<string | null>(null);
   }, []);
 
 
-const startSessionV2 = useMemoizedFn(async (isVoiceChat: boolean) => {
-  try {
-    const newToken = await fetchAccessToken();
-    const avatar = initAvatar(newToken);
+  const startSessionV2 = useMemoizedFn(async (isVoiceChat: boolean) => {
+    try {
+      const newToken = await fetchAccessToken();
+      const avatar = initAvatar(newToken);
 
-    avatar.on(StreamingEvents.STREAM_DISCONNECTED, async () => {
-      console.log("VEYRA-DEBUG:: STREAM OFF");
+      avatar.on(StreamingEvents.STREAM_DISCONNECTED, async () => {
+        console.log("VEYRA-DEBUG:: STREAM OFF");
 
-      const payload = {
-        conversation_id: sessionId,
-        phone_number: userId,
-      };
+        const payload = {
+          conversation_id: sessionId,  // your generated uuid
+          phone_number: userId,
+        };
 
-      try {
-        const res = await fetch( API_ENDPOINTS.CALL_ENDED, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
+        try {
+          const res = await fetch(API_ENDPOINTS.CALL_ENDED, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
 
-        console.log(`:: JSON SEND IT WITH STATUS (${res.status}): `, payload);
-      } catch (err) {
-        console.error("Error sending to API:", err);
+          console.log(`:: JSON SENT WITH STATUS (${res.status}): `, payload);
+        } catch (err) {
+          console.error("Error sending to API:", err);
+        }
+      });
+
+      const avatarObject = await startAvatar(config);
+
+      // Generate our own unique conversation/session ID
+      const generatedId = uuidv4();
+      setSessionId(generatedId);
+
+      if (isVoiceChat) {
+        await startVoiceChat();
       }
-    });
-
-    const session = await startAvatar(config);
-    setSessionId((session as any).sessionId);
-
-    if (isVoiceChat) {
-      await startVoiceChat();
+    } catch (error) {
+      console.error("Error starting avatar session:", error);
     }
-  } catch (error) {
-    console.error("Error starting avatar session:", error);
-  }
-});
+  });
 
   useUnmount(() => {
     stopAvatar();
