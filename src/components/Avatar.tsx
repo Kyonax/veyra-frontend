@@ -6,6 +6,7 @@ import {
   StartAvatarRequest,
   STTProvider,
   ElevenLabsModel,
+  StreamingAvatarApiConfig
 } from "@heygen/streaming-avatar";
 import { useEffect, useRef, useState, Fragment, memo, useMemo, useCallback } from "react";
 import { useMemoizedFn, useUnmount } from "ahooks";
@@ -99,7 +100,7 @@ const startSessionV2 = useMemoizedFn(async (isVoiceChat: boolean) => {
     });
 
     const session = await startAvatar(config);
-    setSessionId(session.sessionId);
+    setSessionId((session as any).sessionId);
 
     if (isVoiceChat) {
       await startVoiceChat();
