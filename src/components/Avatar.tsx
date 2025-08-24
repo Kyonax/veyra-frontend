@@ -7,7 +7,7 @@ import {
   STTProvider,
   ElevenLabsModel,
 } from "@heygen/streaming-avatar";
-import { useEffect, useRef, useState, Fragment, memo, useCallback } from "react";
+import { useEffect, useRef, useState, Fragment, memo, useMemo, useCallback } from "react";
 import { useMemoizedFn, useUnmount } from "ahooks";
 
 import { Button } from "@/components/Button";
@@ -49,6 +49,13 @@ const InteractiveAvatarInner = memo(function InteractiveAvatar() {
 
   const mediaStream = useRef<HTMLVideoElement>(null);
 
+  // Get userId from query params once
+  const userId = useMemo(() => {
+    if (typeof window === "undefined") return null;
+    const params = new URLSearchParams(window.location.search);
+    return params.get("userId");
+  }, []);
+
   const fetchAccessToken = useCallback(async () => {
     try {
       const response = await fetch("/api/get-access-token", {
@@ -74,9 +81,28 @@ const InteractiveAvatarInner = memo(function InteractiveAvatar() {
       // avatar.on(StreamingEvents.AVATAR_STOP_TALKING, (e) => {
       //   console.log("Avatar stopped talking", e);
       // });
-      // avatar.on(StreamingEvents.STREAM_DISCONNECTED, () => {
-      //   console.log("Stream disconnected");
-      // });
+      avatar.on(StreamingEvents.STREAM_DISCONNECTED, async () => {
+        console.log("VEYRA-DEBUG:: STREAM OFF");
+        console.log(`VEYRA-DEBUG:: DATA: ${avatar.sessionId} USER: ${userId}`);
+
+        const payload = {
+          conversation_id: avatar.sessionId,
+          phone_number: userId
+        };
+
+        try {
+          const res = await fetch("https://promoted-evidently-catfish.ngrok-free.app/call_ended", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          const data = await res.json();
+          console.log("API response:", data);
+        } catch (err) {
+          console.error("Error sending to API:", err);
+        }
+      });
       // avatar.on(StreamingEvents.STREAM_READY, (event) => {
       //   console.log(">>>>> Stream ready:", event.detail);
       // });
@@ -155,7 +181,7 @@ const InteractiveAvatarInner = memo(function InteractiveAvatar() {
       {isConnected && (
         <Fragment>
           <MessageHistory />
-          <MessagePusher />
+          <MessagePusher userId={userId} />
         </Fragment>
       )}
     </div>

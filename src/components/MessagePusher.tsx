@@ -11,13 +11,17 @@ type Message = {
     sender: "AVATAR" | "USER" | string;
 };
 
-// const WEBHOOK_URL = "https://promoted-evidently-catfish.ngrok-free.app/messages";
-const WEBHOOK_URL = "https://veyra-project.free.beeceptor.com";
+const WEBHOOK_URL = "https://promoted-evidently-catfish.ngrok-free.app/messages";
+// const WEBHOOK_URL = "https://veyra-project.free.beeceptor.com";
 
-const MessagePusherComponent: React.FC = () => {
-    console.log(`VEYRA-COMPONENT:: Initializing MessagePusher`);
-    
-    const { messages } = useMessageHistory() as { messages: Message[] }; // Fixed line 17
+interface MessagePusherProps {
+  userId: string | null;
+}
+
+const MessagePusherComponent: React.FC<MessagePusherProps> = ({ userId }) => {
+    console.log(`VEYRA-COMPONENT:: Initializing MessagePusher with userId: ${userId}`);
+
+    const { messages } = useMessageHistory() as { messages: Message[] };
     const [status, setStatus] = useState<PushStatus>("idle");
     const lastSentIdRef = useRef<number>(0);
     const isSendingRef = useRef<boolean>(false);
@@ -33,12 +37,12 @@ const MessagePusherComponent: React.FC = () => {
         sessionStorage.setItem("conversationId", conversationIdRef.current);
     }, []);
 
-    // obtener userId de query params
-    const userId = React.useMemo(() => {
-        if (typeof window === "undefined") return null;
-        const params = new URLSearchParams(window.location.search);
-        return params.get("userId");
-    }, []);
+    // Remove the internal userId retrieval since it's now passed as a prop
+    // const userId = React.useMemo(() => {
+    //     if (typeof window === "undefined") return null;
+    //     const params = new URLSearchParams(window.location.search);
+    //     return params.get("userId");
+    // }, []);
 
     const getNewMessages = useCallback((): Message[] => {
         if (!messages.length) return [];
@@ -79,11 +83,11 @@ const MessagePusherComponent: React.FC = () => {
                     processedMessagesRef.current.add(msg.id.toString());
 
                     const json_structure = {
-                            message_id: msg.id,
-                            phone_number: userId,
-                            thread_id: conversationIdRef.current,
-                            content: msg.content,
-                            role: msg.sender === "AVATAR" ? "agent" : "user",
+                        message_id: msg.id,
+                        phone_number: userId,
+                        thread_id: conversationIdRef.current,
+                        content: msg.content,
+                        role: msg.sender === "AVATAR" ? "agent" : "user",
                     }
 
                     const res = await fetch(WEBHOOK_URL, {
@@ -94,13 +98,12 @@ const MessagePusherComponent: React.FC = () => {
 
                     console.log(`:: JSON SEND IT WITH STATUS (${res.status}): `, json_structure);
 
-
                     if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 }
 
                 setStatus("success");
                 setTimeout(() => setStatus("idle"), 10000);
-            } catch (e: unknown) { // Fixed line 49
+            } catch (e: unknown) {
                 console.error("Error sending to webhook:", e);
                 if (e instanceof Error) {
                     console.error("Error message:", e.message);
