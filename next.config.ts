@@ -1,8 +1,12 @@
 import type { NextConfig } from "next";
 
+const withTM = require('next-transpile-modules')([
+  '@heygen/streaming-avatar',
+]);
+
 const nextConfig: NextConfig = {
-  /* config options here */
   reactStrictMode: true,
+
 };
 
-export default nextConfig;
+module.exports = withTM(nextConfig);
