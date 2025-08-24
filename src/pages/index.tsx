@@ -12,7 +12,6 @@ const geistMono = Geist_Mono({
 });
 
 import Avatar from "@/components/Avatar";
-import { MessagePusher } from "@/components/MessagePusher";
 
 export default function Home() {
   return (

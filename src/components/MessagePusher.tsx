@@ -6,15 +6,15 @@ import { useMessageHistory } from "@/components/logic";
 type PushStatus = "idle" | "sending" | "success" | "error";
 
 type Message = {
-  id: string | number;
-  content: string;
-  sender: "AVATAR" | "USER" | string;
+    id: string | number;
+    content: string;
+    sender: "AVATAR" | "USER" | string;
 };
 
 const WEBHOOK_URL = "https://promoted-evidently-catfish.ngrok-free.app/messages";
 
 const MessagePusherComponent: React.FC = () => {
-    const { messages } = useMessageHistory();
+    const { messages } = useMessageHistory() as { messages: Message[] }; // Fixed line 17
     const [status, setStatus] = useState<PushStatus>("idle");
     const lastSentIdRef = useRef<number>(0);
     const isSendingRef = useRef<boolean>(false);
@@ -90,8 +90,11 @@ const MessagePusherComponent: React.FC = () => {
 
                 setStatus("success");
                 setTimeout(() => setStatus("idle"), 10000);
-            } catch (e) {
+            } catch (e: unknown) { // Fixed line 49
                 console.error("Error sending to webhook:", e);
+                if (e instanceof Error) {
+                    console.error("Error message:", e.message);
+                }
                 setStatus("error");
                 setTimeout(() => setStatus("idle"), 5000);
             } finally {
