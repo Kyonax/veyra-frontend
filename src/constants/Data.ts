@@ -1,5 +1,11 @@
 export const APP_NAME = "VEYRA Frontend";
 
+export const API_BASE_URL = "https://promoted-evidently-catfish.ngrok-free.app";
+
+export const API_ENDPOINTS = {
+  CALL_ENDED: `${API_BASE_URL}/call_ended`,
+  MESSAGES: `${API_BASE_URL}/messages`,
+};
 export const AVATARS = [
   {
     avatar_id: "Ann_Therapist_public",

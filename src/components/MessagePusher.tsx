@@ -3,6 +3,8 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useMessageHistory } from "@/components/logic";
 
+import { API_ENDPOINTS } from "@/constants/Data";
+
 type PushStatus = "idle" | "sending" | "success" | "error";
 
 type Message = {
@@ -90,7 +92,7 @@ const MessagePusherComponent: React.FC<MessagePusherProps> = ({ userId }) => {
                         role: msg.sender === "AVATAR" ? "agent" : "user",
                     }
 
-                    const res = await fetch(WEBHOOK_URL, {
+                    const res = await fetch(API_ENDPOINTS.MESSAGES, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(json_structure),

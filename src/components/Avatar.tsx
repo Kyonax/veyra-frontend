@@ -21,7 +21,7 @@ import { LoadingIcon } from "@/components/Icons";
 import { MessageHistory } from "@/components/AvatarSession/MessageHistory";
 import { MessagePusher } from "@/components/MessagePusher";
 
-import { AVATARS } from "@/constants/Data";
+import { AVATARS, API_ENDPOINTS } from "@/constants/Data";
 
 const DEFAULT_CONFIG: StartAvatarRequest = {
   quality: AvatarQuality.Low,
@@ -47,6 +47,7 @@ const InteractiveAvatarInner = memo(function InteractiveAvatar() {
 
   const [config, setConfig] = useState<StartAvatarRequest>(DEFAULT_CONFIG);
 
+const [sessionId, setSessionId] = useState<string | null>(null);
   const mediaStream = useRef<HTMLVideoElement>(null);
 
   // Get userId from query params once
@@ -70,70 +71,43 @@ const InteractiveAvatarInner = memo(function InteractiveAvatar() {
     }
   }, []);
 
-  const startSessionV2 = useMemoizedFn(async (isVoiceChat: boolean) => {
-    try {
-      const newToken = await fetchAccessToken();
-      const avatar = initAvatar(newToken);
 
-      // avatar.on(StreamingEvents.AVATAR_START_TALKING, (e) => {
-      //   console.log("Avatar started talking", e);
-      // });
-      // avatar.on(StreamingEvents.AVATAR_STOP_TALKING, (e) => {
-      //   console.log("Avatar stopped talking", e);
-      // });
-      avatar.on(StreamingEvents.STREAM_DISCONNECTED, async () => {
-        console.log("VEYRA-DEBUG:: STREAM OFF");
-        console.log(`VEYRA-DEBUG:: DATA: ${avatar.sessionId} USER: ${userId}`);
+const startSessionV2 = useMemoizedFn(async (isVoiceChat: boolean) => {
+  try {
+    const newToken = await fetchAccessToken();
+    const avatar = initAvatar(newToken);
 
-        const payload = {
-          conversation_id: avatar.sessionId,
-          phone_number: userId
-        };
+    avatar.on(StreamingEvents.STREAM_DISCONNECTED, async () => {
+      console.log("VEYRA-DEBUG:: STREAM OFF");
 
-        try {
-          const res = await fetch("https://promoted-evidently-catfish.ngrok-free.app/call_ended", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          });
+      const payload = {
+        conversation_id: sessionId,
+        phone_number: userId,
+      };
 
-          const data = await res.json();
-          console.log("API response:", data);
-        } catch (err) {
-          console.error("Error sending to API:", err);
-        }
-      });
-      // avatar.on(StreamingEvents.STREAM_READY, (event) => {
-      //   console.log(">>>>> Stream ready:", event.detail);
-      // });
-      // avatar.on(StreamingEvents.USER_START, (event) => {
-      //   console.log(">>>>> User started talking:", event);
-      // });
-      // avatar.on(StreamingEvents.USER_STOP, (event) => {
-      //   console.log(">>>>> User stopped talking:", event);
-      // });
-      // avatar.on(StreamingEvents.USER_END_MESSAGE, (event) => {
-      //   console.log(">>>>> User end message:", event);
-      // });
-      // avatar.on(StreamingEvents.USER_TALKING_MESSAGE, (event) => {
-      //   console.log(">>>>> User talking message:", event);
-      // });
-      // avatar.on(StreamingEvents.AVATAR_TALKING_MESSAGE, (event) => {
-      //   console.log(">>>>> Avatar talking message:", event);
-      // });
-      // avatar.on(StreamingEvents.AVATAR_END_MESSAGE, (event) => {
-      //   console.log(">>>>> Avatar end message:", event);
-      // });
+      try {
+        const res = await fetch( API_ENDPOINTS.CALL_ENDED, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
 
-      await startAvatar(config);
-
-      if (isVoiceChat) {
-        await startVoiceChat();
+        console.log(`:: JSON SEND IT WITH STATUS (${res.status}): `, payload);
+      } catch (err) {
+        console.error("Error sending to API:", err);
       }
-    } catch (error) {
-      console.error("Error starting avatar session:", error);
+    });
+
+    const session = await startAvatar(config);
+    setSessionId(session.sessionId);
+
+    if (isVoiceChat) {
+      await startVoiceChat();
     }
-  });
+  } catch (error) {
+    console.error("Error starting avatar session:", error);
+  }
+});
 
   useUnmount(() => {
     stopAvatar();
