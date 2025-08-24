@@ -104,7 +104,7 @@ const InteractiveAvatarInner = memo(function InteractiveAvatar() {
     try {
       const response = await fetch(API_ENDPOINTS.BRANDS(userId));
 
-      console.log(`:; VEYRA RESPONSE (${API_ENDPOINTS.BRANDS(userId)}) - `, response);
+      console.log(`:; VEYRA-RESPONSE BRAND DATA (${API_ENDPOINTS.BRANDS(userId)}) - `, response);
       if (response.ok) {
         return await response.json();
       } else {
