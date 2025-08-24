@@ -5,6 +5,7 @@ const withTM = require('next-transpile-modules')([
 ]);
 
 const nextConfig: NextConfig = {
+  optimizeFonts: false,
   reactStrictMode: true,
   eslint: {
     ignoreDuringBuilds: true,
