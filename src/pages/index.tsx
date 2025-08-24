@@ -12,19 +12,25 @@ const geistMono = Geist_Mono({
 });
 
 import Avatar from "@/components/Avatar";
+import IntroApp from "@/components/IntroApp";
 
 export default function Home() {
   return (
-    <div
-      className={`${geistSans.className} ${geistMono.className} font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20`}
-    >
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-      Testing Layout
-      <Avatar />
-      </main>
+    <div className="w-screen h-screen flex flex-col">
+      <header className="row-start-3 flex gap-[30px] flex-wrap items-center justify-center">
+        Testing Footer Layout
+      </header>
+
+      <div className="w-[900px] flex flex-col items-start justify-start gap-5 mx-auto pt-4 pb-20">
+        <main className="w-full">
+          {/* <Avatar /> */}
+           <Avatar />
+          {/* <IntroApp /> */}
+        </main>
+      </div>
 
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-      Testing Footer Layout
+        Testing Footer Layout
       </footer>
     </div>
   );
