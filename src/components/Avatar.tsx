@@ -278,7 +278,7 @@ const InteractiveAvatarInner = memo(function InteractiveAvatar() {
       {isConnected && (
         <Fragment>
           <MessageHistory />
-          <MessagePusher userId={userId} />
+          <MessagePusher userId={userId} sessionId={sessionId} />
         </Fragment>
       )}
     </div>

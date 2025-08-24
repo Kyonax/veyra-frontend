@@ -18,9 +18,10 @@ const WEBHOOK_URL = "https://promoted-evidently-catfish.ngrok-free.app/messages"
 
 interface MessagePusherProps {
   userId: string | null;
+  sessionId: string | null;
 }
 
-const MessagePusherComponent: React.FC<MessagePusherProps> = ({ userId }) => {
+const MessagePusherComponent: React.FC<MessagePusherProps> = ({ userId, sessionId }) => {
     console.log(`VEYRA-COMPONENT:: Initializing MessagePusher with userId: ${userId}`);
 
     const { messages } = useMessageHistory() as { messages: Message[] };
@@ -87,7 +88,7 @@ const MessagePusherComponent: React.FC<MessagePusherProps> = ({ userId }) => {
                     const json_structure = {
                         message_id: msg.id,
                         phone_number: userId,
-                        thread_id: conversationIdRef.current,
+                        thread_id: sessionId,
                         content: msg.content,
                         role: msg.sender === "AVATAR" ? "agent" : "user",
                     }

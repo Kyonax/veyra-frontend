@@ -16,18 +16,10 @@ import IntroApp from "@/components/IntroApp";
 
 export default function Home() {
   return (
-    <div className="w-screen h-screen flex flex-col">
-      <header className="row-start-3 flex gap-[30px] flex-wrap items-center justify-center">
-        Testing Footer Layout
-      </header>
-
-      <div className="w-[900px] flex flex-col items-start justify-start gap-5 mx-auto pt-4 pb-20">
-        <main className="w-full">
-          {/* <Avatar /> */}
-           <Avatar />
-          {/* <IntroApp /> */}
-        </main>
-      </div>
+    <div className="main-container">
+      {/* <Avatar /> */}
+      <Avatar />
+      {/* <IntroApp /> */}
 
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         Testing Footer Layout

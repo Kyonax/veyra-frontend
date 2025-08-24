@@ -1,0 +1,6 @@
+@use "../abstracts/variables" as *;
+
+.intro-app-main {
+  background-color: var(--clr-neutral-50);
+  border-radius: 1rem;
+}

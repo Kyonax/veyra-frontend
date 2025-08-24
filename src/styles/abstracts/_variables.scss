@@ -1,0 +1,114 @@
+/**
+ * Breakpoints for Responsive Design
+ *
+ * @description
+ * Defines a set of breakpoints for creating responsive layouts that adapt to various device sizes.
+ * These breakpoints allow the application to provide an optimal viewing experience across different
+ * screen widths, from mobile phones to large desktop monitors.
+ */
+$breakpoints: (
+    sm: 48em,   // Small Devices (Landscape Phones, 576px and up)
+    md: 64em,   // Medium Devices (Tablets, 768px and up)
+    lg: 82.667em, // Large Devices (Desktops, 992px and up)
+    xl: 100em   // Extra Large Devices (Large Desktops, 1200px and up)
+);
+
+/**
+ * Color Palette
+ *
+ * @description
+ * The color palette defines the primary, secondary, neutral, border, success, warning, and error colors
+ * used throughout the project. Each color is defined in a range of shades for flexibility in design.
+ * These variables enable easy updates to the design's color scheme while maintaining consistency.
+ */
+$colors: (
+    primary: (
+        50: hsl(223, 100%, 70%),
+        100: hsl(223, 100%, 50%), // Original Color #0049ff
+        200: hsl(223, 100%, 35%),
+        300: hsl(223, 100%, 29%),
+        400: hsl(223, 100%, 20%),
+        500: hsl(223, 100%, 13%),
+    ),
+    neutral: (
+        50: hsl(0, 0%, 96%),
+        100: hsl(0, 0%, 79%),
+        200: hsl(0, 0%, 59%),
+        300: hsl(0, 0%, 40%),
+        400: hsl(0, 0%, 22%),
+        500: hsl(0, 0%, 7%), // Background Color #111111
+    ),
+    border: (
+        50: hsla(0, 0%, 95.29%, 0.1),
+        100: hsla(0, 0%, 100%, 0.1), // Actual Border Color
+        200: hsla(0, 0%, 90.59%, 0.1),
+        300: hsla(0, 0%, 85.88%, 0.1),
+        400: hsla(0, 0%, 81.18%, 0.1),
+        500: hsla(0, 0%, 76.47%, 0.1),
+    ),
+    success: (
+        50: hsl(150, 100%, 49%),
+        100: hsl(150, 100%, 39%), // Original Color #00C853
+        200: hsl(150, 100%, 29%),
+        300: hsl(150, 100%, 20%),
+        400: hsl(150, 100%, 13%),
+        500: hsl(150, 100%, 9%),
+    ),
+    warning: (
+        50: hsl(59, 94%, 81%),
+        100: hsl(59, 94%, 71%), // Original Color #f9f871
+        200: hsl(59, 94%, 51%),
+        300: hsl(59, 94%, 41%),
+        400: hsl(59, 94%, 21%),
+        500: hsl(59, 94%, 13%),
+    ),
+    error: (
+        50: hsl(347, 100%, 60%),
+        100: hsl(347, 100%, 50%), // Original Color #ff003d
+        200: hsl(347, 100%, 39%),
+        300: hsl(347, 100%, 34%),
+        400: hsl(347, 100%, 29%),
+        500: hsl(347, 100%, 19%),
+    ),
+);
+
+/**
+ * Typography Scale
+ *
+ * @description
+ * Defines a typography scale for the project, offering predefined font sizes for small, medium,
+ * and large text. This scale ensures consistency in text size across different elements such as
+ * paragraphs, headings, and subheadings. The values are defined in rem units for better scalability.
+ */
+$typo-scale: (
+    small: (
+        100: 0.625rem,   // 7.5px
+        200: 0.875rem,   // 10.5px
+        300: 1rem,       // 12px
+        400: 1.125rem,   // 13.5px
+        500: 1.5rem,     // 18px
+        600: 1.875rem,   // 22.5px
+        700: 2.25rem,    // 27px
+        800: 3rem        // 36px
+    ),
+    medium: (
+        100: 0.75rem,    // 9px
+        200: 1rem,       // 12px
+        300: 1.125rem,   // 13.5px
+        400: 1.25rem,    // 15px
+        500: 1.75rem,    // 21px
+        600: 2.25rem,    // 27px
+        700: 3rem,       // 36px
+        800: 4rem        // 48px
+    ),
+    large: (
+        100: 0.875rem,   // 10.5px
+        200: 1.125rem,   // 13px
+        300: 1.25rem,    // 15px
+        400: 1.5rem,     // 18px
+        500: 2rem,       // 24px
+        600: 3rem,       // 36px
+        700: 4.5rem,     // 54px
+        800: 6rem        // 72px
+    )
+);
