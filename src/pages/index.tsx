@@ -1,5 +1,13 @@
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
+import { useState } from "react";
+import { Geist, Geist_Mono, Poppins } from "next/font/google";
+import Avatar from "@/components/Avatar";
+import IntroApp from "@/components/IntroApp";
+
+export const poppins = Poppins({
+  variable: "--font-poppins",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -11,19 +19,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-import Avatar from "@/components/Avatar";
-import IntroApp from "@/components/IntroApp";
-
 export default function Home() {
-  return (
-    <div className="main-container">
-      {/* <Avatar /> */}
-      <Avatar />
-      {/* <IntroApp /> */}
+  const [showAvatar, setShowAvatar] = useState(false);
 
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        Testing Footer Layout
-      </footer>
+  return (
+    <div className={`${poppins.variable} ${geistSans.variable} ${geistMono.variable} main-container`}>
+      {!showAvatar && <IntroApp onStart={() => setShowAvatar(true)} />}
+      {showAvatar && <Avatar />}
     </div>
   );
 }

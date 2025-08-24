@@ -32,6 +32,72 @@ export function GithubIcon({
   );
 }
 
+
+export function VeyraIcon({
+  size = 24,
+  width,
+  height,
+  ...props
+}: IconSvgProps) {
+  return (
+    <svg
+      height={size || height}
+      width={size || width}
+      {...props}
+      fill="#0049ff" id="Capa_2" data-name="Capa 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 39.39 37.89">
+  <defs>
+  </defs>
+  <g id="Capa_1-2" data-name="Capa 1">
+    <path  d="M19.66,0C7.4,0,0,8.74,0,18.91s7.4,18.98,19.66,18.98,19.73-8.82,19.73-18.98S32.06,0,19.66,0ZM12.89,24.09c-2.41.18-4.51-3.19-4.61-7.35-.1-4.16,1.85-7.8,4.25-7.98,2.4-.16,4.49,3.19,4.59,7.35.1,4.16-1.84,7.82-4.23,7.98ZM27.66,23.06c-2.4.18-4.51-3.19-4.61-7.35-.1-4.16,1.85-7.8,4.25-7.98,2.4-.16,4.5,3.19,4.6,7.35.1,4.16-1.84,7.82-4.24,7.98Z"/>
+  </g>
+</svg>
+  );
+}
+
+
+export function VeyraBigIcon({
+  size = 24,
+  width,
+  height,
+  ...props
+}: IconSvgProps) {
+  return (
+    <svg
+      width={width || size}
+      height={height || size}
+      zoomAndPan="magnify"
+      viewBox="0 0 429.75 193.5"
+      preserveAspectRatio="xMidYMid meet"
+      version="1.2"
+      {...props}
+    >
+      <defs>
+        <clipPath id="8b71f5d789">
+          <path d="M 0.429688 0 L 429.070312 0 L 429.070312 193 L 0.429688 193 Z M 0.429688 0" />
+        </clipPath>
+        <clipPath id="cbe4f9e546">
+          <path d="M 0.429688 35 L 387 35 L 387 156 L 0.429688 156 Z M 0.429688 35" />
+        </clipPath>
+        {/* ...other clipPaths */}
+      </defs>
+
+      <g id="0fa3a4157b">
+        <g clipRule="nonzero" clipPath="url(#8b71f5d789)">
+          <path
+            style={{ stroke: "none", fillRule: "nonzero", fill: "#ffffff", fillOpacity: 1 }}
+            d="M 0.429688 0 L 429.070312 0 L 429.070312 193 L 0.429688 193 Z M 0.429688 0"
+          />
+        </g>
+        <g clipRule="nonzero" clipPath="url(#cbe4f9e546)">
+          <g transform="matrix(1,0,0,1,0,35)">
+            {/* Add the remaining paths here, replacing hyphenated attributes with camelCase */}
+          </g>
+        </g>
+      </g>
+    </svg>
+  );
+}
+
 export function ChevronDownIcon({
   size = 24,
   width,
@@ -42,7 +108,7 @@ export function ChevronDownIcon({
     <svg
       fill="none"
       height={size || height}
-      viewBox="0 0 20 20"
+      viewBox="0 0 429 193"
       width={size || width}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
