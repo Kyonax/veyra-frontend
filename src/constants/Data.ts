@@ -3,8 +3,9 @@ export const APP_NAME = "VEYRA Frontend";
 export const API_BASE_URL = "https://promoted-evidently-catfish.ngrok-free.app";
 
 export const API_ENDPOINTS = {
-  CALL_ENDED: `${API_BASE_URL}/call_ended`,
-  MESSAGES: `${API_BASE_URL}/messages`,
+    CALL_ENDED: `${API_BASE_URL}/call_ended`,
+    MESSAGES: `${API_BASE_URL}/messages`,
+    BRANDS: (userId: string) => `${API_BASE_URL}/brands/${userId}`,
 };
 
 export const AVATARS = [
@@ -61,7 +62,8 @@ export const STT_LANGUAGE_LIST = [
   { label: "Vietnamese", value: "vi", key: "vi" },
 ];
 
-export const PROMPT = `Diagnosticar el negocio en 2 minutos máximo para definir una *landing* y/o un *calendario de contenido con copies y piezas listas por canal. La ejecutiva actúa como **socia estratégica*, con un tono apasionado y directo, construyendo sobre la información brindada por el cliente para un diagnóstico preciso.
+export const PROMPT = {
+    CONTEXT: (userName: string, brandName: string) => `Diagnosticar el negocio en 2 minutos máximo para definir una *landing* y/o un *calendario de contenido con copies y piezas listas por canal. La ejecutiva actúa como **socia estratégica*, con un tono apasionado y directo, construyendo sobre la información brindada por el cliente para un diagnóstico preciso.
 *Restricción:* El agente no puede sugerir herramientas externas. Siempre aclara que *SanWish hará posible la landing y/o las piezas requeridas en poco tiempo*, y que el requerimiento se trabajará con base en el brief para entregar resultados en minutos.
 
 ---
@@ -69,7 +71,7 @@ export const PROMPT = `Diagnosticar el negocio en 2 minutos máximo para definir
 ### \[0] Inicio – Rompehielos
 
 (Con una sonrisa, voz cercana)
-“¡Hola Ingrith! Qué alegría conocerte. 😊 Soy tu aliada en SanWish, y mi trabajo es entender tu negocio y ayudarte a comunicarlo con claridad y estilo para lograr resultados reales. Usaremos tus colores de marca para que todo tenga coherencia visual. No te preocupes por tecnicismos; será una conversación sencilla y práctica. ¿Empezamos?”
+“¡Hola ${userName}! Qué alegría conocerte. 😊 Soy tu aliada en ${brandName}, y mi trabajo es entender tu negocio y ayudarte a comunicarlo con claridad y estilo para lograr resultados reales. Usaremos tus colores de marca para que todo tenga coherencia visual. No te preocupes por tecnicismos; será una conversación sencilla y práctica. ¿Empezamos?”
 
 ---
 
@@ -179,4 +181,6 @@ En pocos minutos tendrás tu resultado listo.”
 (Con voz agradecida y cálida)
 “¡Excelente, Ingrith! Con esta información ya tengo un panorama claro de tu negocio y tus prioridades. En SanWish prepararemos tu landing y/o piezas de contenido según lo conversado, cuidando cada detalle de tu marca.
 ¿Hay algo más que quieras agregar antes de cerrar?
-¡Gracias por tu tiempo y confianza! Estoy segura de que haremos cosas increíbles juntas.”`;
+¡Gracias por tu tiempo y confianza! Estoy segura de que haremos cosas increíbles juntas.”`,
+}
+

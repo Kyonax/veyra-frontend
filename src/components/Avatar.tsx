@@ -35,20 +35,24 @@ import { v4 as uuidv4 } from "uuid";
 
 import { AVATARS, API_ENDPOINTS, PROMPT } from "@/constants/Data";
 
-const DEFAULT_CONFIG: StartAvatarRequest = {
-  quality: AvatarQuality.Low,
-  avatarName: AVATARS[0].avatar_id,
-  knowledgeBase: PROMPT,
-  voice: {
-    rate: 1.5,
-    emotion: VoiceEmotion.EXCITED,
-    model: ElevenLabsModel.eleven_flash_v2_5,
-  },
-  language: "es",
-  voiceChatTransport: VoiceChatTransport.WEBSOCKET,
-  sttSettings: {
-    provider: STTProvider.DEEPGRAM,
-  },
+// Define the BrandData interface
+interface BrandData {
+  brand_id: number;
+  brand_name: string;
+  brand_logo: string;
+  user_phone: string;
+  user_name: string;
+  main_color: string;
+}
+
+// Default config will be created dynamically
+const DEFAULT_BRAND_DATA: BrandData = {
+  brand_id: 1,
+  brand_name: "Default Brand",
+  brand_logo: "",
+  user_phone: "unknown",
+  user_name: "User",
+  main_color: "#ACAF50"
 };
 
 type StartMode = "video" | "text";
@@ -57,9 +61,6 @@ const InteractiveAvatarInner = memo(function InteractiveAvatar() {
   const { initAvatar, startAvatar, stopAvatar, sessionState, stream } =
     useStreamingAvatarSession();
   const { startVoiceChat } = useVoiceChat();
-
-  // Use default config and do not show the AvatarConfig UI
-  const [config] = useState<StartAvatarRequest>(DEFAULT_CONFIG);
 
   const [sessionId, setSessionId] = useState<string | null>(null);
   const mediaStream = useRef<HTMLVideoElement>(null);
@@ -97,6 +98,25 @@ const InteractiveAvatarInner = memo(function InteractiveAvatar() {
     }
   }, []);
 
+  const fetchBrandData = useCallback(async (): Promise<BrandData> => {
+    if (!userId) return DEFAULT_BRAND_DATA;
+   
+    try {
+      const response = await fetch(API_ENDPOINTS.BRANDS(userId));
+
+      console.log(`:; VEYRA RESPONSE (${API_ENDPOINTS.BRANDS(userId)}) - `, response);
+      if (response.ok) {
+        return await response.json();
+      } else {
+        console.error("Failed to fetch brand data");
+        return DEFAULT_BRAND_DATA;
+      }
+    } catch (error) {
+      console.error("Error fetching brand data:", error);
+      return DEFAULT_BRAND_DATA;
+    }
+  }, [userId]);
+
   /**
    * startSessionV2
    * - mode "video" => start avatar + start voice chat (voice enabled)
@@ -104,6 +124,27 @@ const InteractiveAvatarInner = memo(function InteractiveAvatar() {
    */
   const startSessionV2 = useMemoizedFn(async (mode: StartMode) => {
     try {
+      // Fetch brand data first
+      const brandData = await fetchBrandData();
+
+      console.log(`BrandData: ${brandData}`);
+      // Create dynamic config with brand data
+      const dynamicConfig: StartAvatarRequest = {
+        quality: AvatarQuality.Low,
+        avatarName: AVATARS[0].avatar_id,
+        knowledgeBase: PROMPT.CONTEXT(brandData.user_name, brandData.brand_name),
+        voice: {
+          rate: 1.5,
+          emotion: VoiceEmotion.EXCITED,
+          model: ElevenLabsModel.eleven_flash_v2_5,
+        },
+        language: "es",
+        voiceChatTransport: VoiceChatTransport.WEBSOCKET,
+        sttSettings: {
+          provider: STTProvider.DEEPGRAM,
+        },
+      };
+
       // generate id early so handlers can reference it reliably
       const generatedId = uuidv4();
       setSessionId(generatedId);
@@ -135,8 +176,8 @@ const InteractiveAvatarInner = memo(function InteractiveAvatar() {
         }
       });
 
-      // startAvatar with the default config
-      await startAvatar(config);
+      // startAvatar with the dynamic config
+      await startAvatar(dynamicConfig);
 
       // for 'video' we also start voice chat (if available)
       if (mode === "video") {
