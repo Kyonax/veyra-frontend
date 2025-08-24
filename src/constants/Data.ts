@@ -1,6 +1,6 @@
 export const APP_NAME = "VEYRA Frontend";
 
-export const API_BASE_URL = "https://hackaton.piplink.co";
+export const API_BASE_URL = "https://hackathon-backend-winter-meadow-8725.fly.dev";
 
 export const API_ENDPOINTS = {
     CALL_ENDED: `${API_BASE_URL}/call_ended`,

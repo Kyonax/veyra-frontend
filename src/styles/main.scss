@@ -358,3 +358,61 @@ body {
 .box-video-down {
   border-top: 1px solid var(--clr-primary-100);
 }
+// AvatarControls.scss
+.avatar-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  width: 100%;
+  align-items: center;
+
+  .toggle-group {
+    border-radius: 0.5rem;
+    padding: 0.25rem;
+    background-color: var(--clr-primary-500);
+    border: 1px solid var(--clr-primary-300);
+    
+    &.disabled {
+      opacity: 0.5;
+    }
+
+    .toggle-group-item {
+      border-radius: 0.5rem;
+      padding: 0.5rem;
+      width: 90px;
+      text-align: center;
+      font-size: var(--fs-200);
+      color: var(--clr-neutral-100);
+      transition: all 0.3s ease-in-out;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+
+      &[data-state='on'] {
+        background-color: var(--clr-primary-100);
+        color: white;
+      }
+
+      &:hover:not([data-state='on']) {
+        background-color: var(--clr-primary-400);
+      }
+    }
+  }
+
+  .interrupt-button {
+    position: absolute;
+    top: -6rem;
+    right: 0.75rem;
+
+    button {
+      font-size: var(--fs-200);
+      padding: 0rem 1rem;
+      @extend .btn-primary;
+    }
+  }
+}
+.button-send {
+  cursor: pointer;
+  background-color: var(--clr-primary-100);
+}

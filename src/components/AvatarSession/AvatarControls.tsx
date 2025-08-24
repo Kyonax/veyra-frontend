@@ -1,12 +1,11 @@
 import { ToggleGroup, ToggleGroupItem } from "@radix-ui/react-toggle-group";
 import React from "react";
 
-import { useVoiceChat } from "../logic/useVoiceChat";
-import { Button } from "../Button";
-import { useInterrupt } from "../logic/useInterrupt";
+import { useVoiceChat } from "@/components/logic/useVoiceChat";
+import { useInterrupt } from "@/components/logic/useInterrupt";
 
-import { AudioInput } from "./AudioInput";
-import { TextInput } from "./TextInput";
+import { AudioInput } from "@/components/AvatarSession/AudioInput";
+import { TextInput } from "@/components/AvatarSession/TextInput";
 
 export const AvatarControls: React.FC = () => {
   const {
@@ -18,9 +17,9 @@ export const AvatarControls: React.FC = () => {
   const { interrupt } = useInterrupt();
 
   return (
-    <div className="flex flex-col gap-3 relative w-full items-center">
+    <div className="avatar-controls">
       <ToggleGroup
-        className={`bg-white border-primary-100 rounded-lg p-1 ${isVoiceChatLoading ? "opacity-50" : ""}`}
+        className={`toggle-group ${isVoiceChatLoading ? "disabled" : ""}`}
         disabled={isVoiceChatLoading}
         type="single"
         value={isVoiceChatActive || isVoiceChatLoading ? "voice" : "text"}
@@ -36,24 +35,18 @@ export const AvatarControls: React.FC = () => {
           }
         }}
       >
-        <ToggleGroupItem
-          className="data-[state=on]:bg-white rounded-lg p-2 text-sm w-[90px] text-center"
-          value="voice"
-        >
+        <ToggleGroupItem className="toggle-group-item" value="voice">
           Voice Chat
         </ToggleGroupItem>
-        <ToggleGroupItem
-          className="data-[state=on]:bg-white rounded-lg p-2 text-sm w-[90px] text-center"
-          value="text"
-        >
+        <ToggleGroupItem className="toggle-group-item" value="text">
           Text Chat
         </ToggleGroupItem>
       </ToggleGroup>
       {isVoiceChatActive || isVoiceChatLoading ? <AudioInput /> : <TextInput />}
-      <div className="absolute top-[-70px] right-3">
-        <Button className="!bg-zinc-700 !text-white" onClick={interrupt}>
+      <div className="interrupt-button">
+        <button onClick={interrupt}>
           Interrupt
-        </Button>
+        </button>
       </div>
     </div>
   );

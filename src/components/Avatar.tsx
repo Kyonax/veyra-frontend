@@ -195,7 +195,7 @@ const InteractiveAvatarInner = memo(function InteractiveAvatar() {
 
   const InactiveSkeleton = () => (
     <div className="w-full h-full flex items-center justify-center">
-      <div className="w-[550px] py-8">
+      <div className="w-[350px] md:w-[550px] py-8">
         <div className="animate-pulse skeleton  rounded-md h-48 mb-4" />
         <div className="animate-pulse skeleton rounded-md h-8 mb-2" />
         <div className="animate-pulse skeleton  rounded-md h-8 mb-2" />
@@ -213,7 +213,7 @@ const InteractiveAvatarInner = memo(function InteractiveAvatar() {
         height={100}
         priority
       />
-      <div className="flex flex-col overflow-hidden rounded-lg border box-video w-full max-w-4xl">
+      <div className="flex flex-col overflow-hidden rounded-lg border box-video w-[70%] md:w-[70%] max-w-2xl md:max-w-4xl">
         <div className="relative w-full aspect-video overflow-hidden flex flex-col items-center justify-center">
           {sessionState !== StreamingAvatarSessionState.INACTIVE ? (
             <AvatarVideo ref={mediaStream} />
@@ -253,7 +253,6 @@ const InteractiveAvatarInner = memo(function InteractiveAvatar() {
           )}
         </div>
       </div>
-
       {isConnected && (
         <Fragment>
           <MessageHistory />
