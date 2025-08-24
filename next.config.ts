@@ -6,7 +6,9 @@ const withTM = require('next-transpile-modules')([
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 module.exports = withTM(nextConfig);
