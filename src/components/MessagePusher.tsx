@@ -11,11 +11,12 @@ type Message = {
     sender: "AVATAR" | "USER" | string;
 };
 
-const WEBHOOK_URL = "https://promoted-evidently-catfish.ngrok-free.app/messages";
+// const WEBHOOK_URL = "https://promoted-evidently-catfish.ngrok-free.app/messages";
+const WEBHOOK_URL = "https://veyra-project.free.beeceptor.com";
 
 const MessagePusherComponent: React.FC = () => {
     console.log(`VEYRA-COMPONENT:: Initializing MessagePusher`);
-                                                
+    
     const { messages } = useMessageHistory() as { messages: Message[] }; // Fixed line 17
     const [status, setStatus] = useState<PushStatus>("idle");
     const lastSentIdRef = useRef<number>(0);
@@ -46,6 +47,8 @@ const MessagePusherComponent: React.FC = () => {
             const bId = typeof b.id === "string" ? parseInt(b.id, 10) : b.id;
             return aId - bId;
         });
+
+        console.log(`VEYRA-DEBUG:: ALL MESSAGES `, sortedMessages);
 
         return sortedMessages.filter((msg) => {
             const msgId = typeof msg.id === "string" ? parseInt(msg.id, 10) : msg.id;
