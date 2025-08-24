@@ -73,17 +73,22 @@ const MessagePusherComponent: React.FC = () => {
                 for (const msg of messagesToSend) {
                     processedMessagesRef.current.add(msg.id.toString());
 
-                    const res = await fetch(WEBHOOK_URL, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
+                    const json_structure = {
                             message_id: msg.id,
                             phone_number: userId,
                             thread_id: conversationIdRef.current,
                             content: msg.content,
                             role: msg.sender === "AVATAR" ? "agent" : "user",
-                        }),
+                    }
+
+                    const res = await fetch(WEBHOOK_URL, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(json_structure),
                     });
+
+                    console.log(`:: JSON SEND IT WITH STATUS ${res.status}: `, json_structure);
+
 
                     if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 }
