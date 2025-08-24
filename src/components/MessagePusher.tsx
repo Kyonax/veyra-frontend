@@ -14,6 +14,8 @@ type Message = {
 const WEBHOOK_URL = "https://promoted-evidently-catfish.ngrok-free.app/messages";
 
 const MessagePusherComponent: React.FC = () => {
+    console.log(`VEYRA-COMPONENT:: Initializing MessagePusher`);
+                                                
     const { messages } = useMessageHistory() as { messages: Message[] }; // Fixed line 17
     const [status, setStatus] = useState<PushStatus>("idle");
     const lastSentIdRef = useRef<number>(0);
