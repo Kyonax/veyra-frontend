@@ -31,7 +31,7 @@ export default function IntroApp({ onStart }: IntroAppProps) {
       </main>
 
       <div className="mt-3 w-[67%] max-w-[890px] grid text-right">
-        <span>{`>`} build_with :: <strong>nextjs - typescript - tailwind - scss - vercel</strong></span>
+        <span>{`>`} build_by :: <strong>veyra corp</strong></span>
       </div>
 
       <div className="w-full footer-intro-app">
@@ -49,8 +49,7 @@ export default function IntroApp({ onStart }: IntroAppProps) {
         </div>
         <div className="footer-column">
           <p>
-            Más del <strong>80% de PYMES</strong> en Latinoamerica quiebran
-            por no tener acceso a nuestra herramienta.
+            Tu equipo de <strong>Marketing</strong> disponible <strong>24/7.</strong>
           </p>
         </div>
       </div>

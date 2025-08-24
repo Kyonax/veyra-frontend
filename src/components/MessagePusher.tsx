@@ -156,8 +156,8 @@ const MessagePusherComponent: React.FC<MessagePusherProps> = ({ userId, sessionI
     };
 
     return (
-        <div className="text-xs text-gray-400 flex items-center gap-1">
-            <span>Sync mensajes {getEmoji()}</span>
+        <div className="text-xs text-neutral-500 flex items-center gap-1">
+            <span>Sync Messages {getEmoji()}</span>
         </div>
     );
 };
