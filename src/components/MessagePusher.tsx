@@ -87,7 +87,7 @@ const MessagePusherComponent: React.FC = () => {
                         body: JSON.stringify(json_structure),
                     });
 
-                    console.log(`:: JSON SEND IT WITH STATUS ${res.status}: `, json_structure);
+                    console.log(`:: JSON SEND IT WITH STATUS (${res.status}): `, json_structure);
 
 
                     if (!res.ok) throw new Error(`HTTP ${res.status}`);
