@@ -127,7 +127,7 @@ const InteractiveAvatarInner = memo(function InteractiveAvatar() {
       // Fetch brand data first
       const brandData = await fetchBrandData();
 
-      console.log(`BrandData: ${brandData}`);
+      console.log(`:: VEYRA RESPONSE - BrandData: ${brandData}`);
       // Create dynamic config with brand data
       const dynamicConfig: StartAvatarRequest = {
         quality: AvatarQuality.Low,
